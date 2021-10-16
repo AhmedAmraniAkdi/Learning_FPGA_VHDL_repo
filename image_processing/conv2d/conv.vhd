@@ -23,13 +23,13 @@ end conv;
 
 architecture rtl of conv is
     -- internal signals
-    type t_kernel is array (0 to n_elems - 1) of signed(g_width - 1 downto 0);
-    signal r_kernel : t_kernel := (others => (others => '1'));
+    type t_kernel is array (0 to n_elems - 1) of integer range -2**g_width to (2**g_width) - 1;
+    signal r_kernel : t_kernel := (others => 1);
     --
-    type t_mult_data is array (0 to n_elems - 1) of signed(g_width * 2 - 1 downto 0);
-    signal r_mult_data : t_mult_data := (others => (others => '0'));
+    type t_mult_data is array (0 to n_elems - 1) of integer range -2**(g_width + 1) to (2**(g_width + 1)) - 1;
+    signal r_mult_data : t_mult_data := (others => 0);
     --
-    signal r_acum : signed(g_width * 2 - 1 downto 0) := (others => '0');
+    signal r_acum : integer range -2**(g_width + 1) to (2**(g_width + 1)) - 1;
     --
     signal pipeline_mult : std_logic;
     signal pipeline_acum: std_logic;
@@ -41,7 +41,7 @@ begin
     begin
         if rising_edge(i_clk) then
             for i in 0 to n_elems - 1 loop
-                r_mult_data(i) <= r_kernel(i) * signed(i_pixel_data((i + 1) * g_width - 1 to g_width * i));
+                r_mult_data(i) <= r_kernel(i) * to_integer( signed(i_pixel_data((i + 1) * g_width - 1 to g_width * i)) );
             end loop;
             pipeline_mult <= i_pixel_valid;
         end if;
@@ -50,9 +50,9 @@ begin
     -- by how signals work, an iterative sum would not work, need variables
     -- does it even need to be a process?
     p_acum : process(r_mult_data, pipeline_mult) is 
-    variable v_acum : signed(g_width * 2 - 1 downto 0); 
+    variable v_acum : integer range -2**(g_width + 1) to (2**(g_width + 1)) - 1; 
     begin
-        v_acum := (others => '0');
+        v_acum := 0;
         for i in 0 to n_elems - 1 loop
             v_acum := v_acum + r_mult_data(i);
         end loop;
@@ -62,7 +62,7 @@ begin
     
     p_out : process(r_acum, pipeline_acum) is   
     begin
-        o_data <= std_logic_vector(r_acum / 9);
+        o_data <= std_logic_vector(to_signed(r_acum / 9, g_width));
         o_data_valid <= pipeline_acum;
     end process p_out;
     
