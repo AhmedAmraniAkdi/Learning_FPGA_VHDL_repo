@@ -50,6 +50,10 @@ begin
     -- by how signals work, an iterative sum would not work, need variables
     -- does it even need to be a process?
     -- do we have to make another 2 stages of pipelining for combinationl logic?
+    -- https://www.es.ele.tue.nl/education/Computation/Cmp24.pdf
+    -- https://vhdlguru.blogspot.com/p/example-codes.html
+    -- https://www.allaboutcircuits.com/technical-articles/why-how-pipelining-in-fpga/
+    -- https://www.edaboard.com/threads/vhdl-code-to-add-elements-of-an-array-together-in-one-clock-cycle.225275/
     p_acum : process(all) is 
     variable v_acum : integer;
     begin
