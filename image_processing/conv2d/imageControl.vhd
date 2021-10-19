@@ -54,12 +54,12 @@ begin
     count_allbuffers_pixels : process(i_clk) is   
     begin
         if rising_edge(i_clk) then
-            if(i_rst) then
+            if(i_rst = '1') then
                 r_total_pixels <= 0;
             else
-                if(i_pixel_valid and not r_can_read) then
+                if(i_pixel_valid = '1' and r_can_read = '0') then
                     r_total_pixels <= r_total_pixels + 1;
-                else if (not i_pixel_valid and r_can_read) then
+                else if (i_pixel_valid = '0' and r_can_read = '1') then
                     r_total_pixels <= r_total_pixels - 1;
                     end if;
                 end if;
@@ -70,7 +70,7 @@ begin
     fsm : process(i_clk) is   
     begin
         if rising_edge(i_clk) then
-            if(i_rst) then
+            if(i_rst = '1') then
                 curr_state <= IDLE;
                 r_can_read <= '0';
                 o_intr <= '0';
@@ -99,10 +99,10 @@ begin
     wcount_px : process(i_clk) is   
     begin
         if rising_edge(i_clk) then
-            if(i_rst) then
+            if(i_rst = '1') then
                 r_pixel_counter_write <= 0;
             else
-                if(i_pixel_valid) then -- natural up to 511, so 9 bits exactly, no need for an if else for wrapping?
+                if(i_pixel_valid = '1') then -- natural up to 511, so 9 bits exactly, no need for an if else for wrapping?
                     r_pixel_counter_write <= r_pixel_counter_write + 1;
                 end if;
             end if;
@@ -112,7 +112,7 @@ begin
     to_which_buffer : process(i_clk) is   
     begin
         if rising_edge(i_clk) then
-            if(i_rst) then
+            if(i_rst = '1') then
                 r_current_write_buffer <= 0;
             else
                 if(r_pixel_counter_write = 511 and i_pixel_valid = '1') then --already have the 511 and received the 512
@@ -141,10 +141,10 @@ begin
     rcount_px : process(i_clk) is   
     begin
         if rising_edge(i_clk) then
-            if(i_rst) then
+            if(i_rst = '1') then
                 r_pixel_counter_read <= 0;
             else
-                if(r_can_read) then -- natural up to 511, so 9 bits exactly, no need for an if else for wrapping?
+                if(r_can_read = '1') then -- natural up to 511, so 9 bits exactly, no need for an if else for wrapping?
                     r_pixel_counter_read <= r_pixel_counter_read + 1;
                 end if;
             end if;
@@ -154,7 +154,7 @@ begin
     from_which_buffers : process(i_clk) is   
     begin
         if rising_edge(i_clk) then
-            if(i_rst) then
+            if(i_rst = '1') then
                 r_current_read_buffer <= 0;
             else
                 if(r_pixel_counter_read = 511 and r_can_read = '1') then --already have the 511 and received the 512

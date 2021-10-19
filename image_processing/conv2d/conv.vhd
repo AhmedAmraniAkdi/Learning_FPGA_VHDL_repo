@@ -1,3 +1,6 @@
+-- convolution
+-- gets an array of 9 bytes, multiplies and adds
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -72,3 +75,4 @@ begin
     end process p_out;
     
 end rtl;
+
