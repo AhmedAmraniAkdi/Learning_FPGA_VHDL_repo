@@ -57,21 +57,25 @@ begin
     -- https://vhdlguru.blogspot.com/p/example-codes.html
     -- https://www.allaboutcircuits.com/technical-articles/why-how-pipelining-in-fpga/
     -- https://www.edaboard.com/threads/vhdl-code-to-add-elements-of-an-array-together-in-one-clock-cycle.225275/
-    p_acum : process(all) is 
+    p_acum : process(i_clk) is 
     variable v_acum : integer;
     begin
-        v_acum := 0;
-        for i in 0 to n_elems - 1 loop
-            v_acum := v_acum + r_mult_data(i);
-        end loop;
+        if rising_edge(i_clk) then
+            v_acum := 0;
+            for i in 0 to n_elems - 1 loop
+                v_acum := v_acum + r_mult_data(i);
+            end loop;
+        end if;
         r_acum <= v_acum;
         pipeline_acum <= pipeline_mult;
     end process p_acum;
     
-    p_out : process(all) is   
+    p_out : process(i_clk) is   
     begin
-        o_data <= std_logic_vector(to_signed(r_acum / 9, g_width));
-        o_data_valid <= pipeline_acum;
+        if rising_edge(i_clk) then
+            o_data <= std_logic_vector(to_signed(r_acum / 9, g_width));
+            o_data_valid <= pipeline_acum;
+        end if;
     end process p_out;
     
 end rtl;
