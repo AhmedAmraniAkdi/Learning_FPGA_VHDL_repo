@@ -28,8 +28,8 @@ architecture behave of fulldesign_tb is
      );
 	end component Toplevel_Conv2d;
 
-    signal    clk             : std_logic;
-    signal    axi_reset_n_tb  : std_logic;
+    signal    clk             : std_logic := '0';
+    signal    axi_reset_n_tb  : std_logic := '0';
         -- slave interface
     signal    i_data_valid_tb : std_logic;
     signal    i_input_tb      : std_logic_vector(7 downto 0);
@@ -47,12 +47,13 @@ architecture behave of fulldesign_tb is
     
     constant img_size         : natural := 512; -- no need to get size from header on our case
     constant header_size      : natural := 1078; -- same
+    type char_file is file of character;
+    file input_img    : char_file open read_mode is "lena_gray.bmp";
+    file output_img   : char_file open write_mode is "lena_gray_blurred.bmp";
     
     -- https://vhdlwhiz.com/read-bmp-file/
     -- https://www.nandland.com/vhdl/examples/example-file-io.html
-    type char_file is file of character;
-    
-    type header_type  is array (0 to header_size - 1) of character;
+
     
 	begin
 
@@ -84,8 +85,6 @@ architecture behave of fulldesign_tb is
 	
 	p_send_input : process is
 	-- file vars
-    file input_img    : char_file open read_mode is "lena_gray.bmp";
-    file output_img   : char_file open write_mode is "lena_gray_blurred.bmp";
     variable char     : character;
     variable sentsize : natural := 0;
     
@@ -96,10 +95,12 @@ architecture behave of fulldesign_tb is
         wait for 100ns;
         
         -- write header, it's the same for both images
-        for i in header_type'range loop
+        for i in 0 to header_size - 1 loop
             read(input_img, char);
             write(output_img, char);
         end loop;
+        
+        report "header written";
         
         -- first row needs to be 0
         for i in 0 to img_size - 1 loop
@@ -119,12 +120,16 @@ architecture behave of fulldesign_tb is
         i_data_valid_tb <= '0';
         sentsize := sentsize + img_size * 3;
         
-        while(sentsize < img_size) loop
+        report "all linebuffers are full for the first time";
+        
+        -- send line by line, wait for interrupt that signals a buffer is free before sending data
+        while(sentsize < img_size*img_size) loop
             wait until o_interrupt_tb = '1';
             for i in 0 to img_size - 1 loop
                 wait until clk = '1';
                 read(input_img, char);
                 i_input_tb <= std_logic_vector(to_unsigned(character'pos(char), 8));
+                i_data_valid_tb <= '1';
             end loop;
         
             wait until clk = '1';
@@ -136,6 +141,8 @@ architecture behave of fulldesign_tb is
         wait until clk = '1';
         i_data_valid_tb <= '0';
         
+        -- send last 0 line for bottom border conv
+        wait until o_interrupt_tb = '1';
         for i in 0 to img_size - 1 loop
             wait until clk = '1';
             i_input_tb <= (others => '0');
@@ -144,14 +151,15 @@ architecture behave of fulldesign_tb is
         
         wait until clk = '1';
         i_data_valid_tb <= '0';
-      
-        file_close(input_img);
+        
+        wait; 
+        -- the hmed factor coming in clutch , what happened is we read the whole image but we are still processing output, 
+        -- this process reruns again but since we are at end of file, an error happens! wait fixes it!!
     
     end process p_send_input;
     
    	p_receive_output : process(clk) is
 	-- file vars
-    file output_img   : char_file open write_mode is "lena_gray_blurred.bmp";
     variable char     : character;
     variable receivesize : natural := 0;
     
@@ -163,8 +171,9 @@ architecture behave of fulldesign_tb is
                 write(output_img, char);
                 receivesize := receivesize + 1;
             end if;
-            if(receivesize = img_size) then
+            if(receivesize = img_size*img_size) then
                 file_close(output_img);
+                file_close(input_img);
                 report "Simulation done. Check ""lena_gray_blurred.bmp"" image.";
                 finish;
             end if;
