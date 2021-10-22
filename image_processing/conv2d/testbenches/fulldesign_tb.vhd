@@ -49,6 +49,7 @@ architecture behave of fulldesign_tb is
     constant header_size      : natural := 1078; -- same
     type char_file is file of character;
     file input_img    : char_file open read_mode is "lena_gray.bmp";
+    file test_img     : char_file open read_mode is "lena_gray.bmp";
     file output_img   : char_file open write_mode is "lena_gray_blurred.bmp";
     
     -- https://vhdlwhiz.com/read-bmp-file/
@@ -92,10 +93,12 @@ architecture behave of fulldesign_tb is
     
         wait for 100ns;
         axi_reset_n_tb <= '1';
+        i_data_valid_tb <= '0';
         wait for 100ns;
         
         -- write header, it's the same for both images
         for i in 0 to header_size - 1 loop
+            read(test_img, char);
             read(input_img, char);
             write(output_img, char);
         end loop;
@@ -122,7 +125,6 @@ architecture behave of fulldesign_tb is
         
         report "all linebuffers are full for the first time";
         
-        -- send line by line, wait for interrupt that signals a buffer is free before sending data
         while(sentsize < img_size*img_size) loop
             wait until o_interrupt_tb = '1';
             for i in 0 to img_size - 1 loop
@@ -141,7 +143,6 @@ architecture behave of fulldesign_tb is
         wait until clk = '1';
         i_data_valid_tb <= '0';
         
-        -- send last 0 line for bottom border conv
         wait until o_interrupt_tb = '1';
         for i in 0 to img_size - 1 loop
             wait until clk = '1';
@@ -161,6 +162,7 @@ architecture behave of fulldesign_tb is
    	p_receive_output : process(clk) is
 	-- file vars
     variable char     : character;
+    variable test_char: character;
     variable receivesize : natural := 0;
     
     begin
@@ -168,12 +170,25 @@ architecture behave of fulldesign_tb is
         if rising_edge(clk) then
             if(o_data_valid_tb = '1') then
                 char := character'val(to_integer(unsigned(o_data_tb)));
+                read(test_img, test_char);
+--                report "received " & integer'image(receivesize) 
+--                        & " char: "  & integer'image(to_integer(unsigned(o_data_tb)))
+--                        & " correct: " & integer'image(character'pos(test_char));
+--                if(o_data_tb /= std_logic_vector(to_unsigned(character'pos(test_char), 8))) then
+--                    report "error!!!";
+--                    report "o_data_tb: " & integer'image(to_integer(unsigned(o_data_tb))) & " correct value: " & integer'image(character'pos(test_char));
+--                    report "no same output - received: " & integer'image(receivesize) severity failure;
+--                end if;
+--                if (receivesize = 32) then
+--                    finish;
+--                end if;
                 write(output_img, char);
                 receivesize := receivesize + 1;
             end if;
             if(receivesize = img_size*img_size) then
                 file_close(output_img);
                 file_close(input_img);
+                file_close(test_img);
                 report "Simulation done. Check ""lena_gray_blurred.bmp"" image.";
                 finish;
             end if;

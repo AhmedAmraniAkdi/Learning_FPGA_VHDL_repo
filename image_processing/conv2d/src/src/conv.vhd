@@ -1,5 +1,6 @@
 -- convolution
 -- gets an array of 9 bytes, multiplies and adds
+-- if the kernel has negatives like sobel filter, we can clam between 0 and 255 so that it doesn't warp on negatives
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -44,7 +45,7 @@ begin
     begin
         if rising_edge(i_clk) then
             for i in 0 to n_elems - 1 loop
-                r_mult_data(i) <= r_kernel(i) * to_integer( signed( i_pixel_data((i + 1) * g_width - 1 downto g_width * i) ) );
+                r_mult_data(i) <= r_kernel(i) * to_integer( unsigned( i_pixel_data((i + 1) * g_width - 1 downto g_width * i) ) );
             end loop;
             pipeline_mult <= i_pixel_valid;
         end if;
@@ -65,15 +66,15 @@ begin
             for i in 0 to n_elems - 1 loop
                 v_acum := v_acum + r_mult_data(i);
             end loop;
+            pipeline_acum <= pipeline_mult;
+            r_acum <= v_acum;
         end if;
-        r_acum <= v_acum;
-        pipeline_acum <= pipeline_mult;
     end process p_acum;
     
     p_out : process(i_clk) is   
     begin
         if rising_edge(i_clk) then
-            o_data <= std_logic_vector(to_signed(r_acum / 9, g_width));
+            o_data <= std_logic_vector(to_unsigned(r_acum / 9, g_width));
             o_data_valid <= pipeline_acum;
         end if;
     end process p_out;

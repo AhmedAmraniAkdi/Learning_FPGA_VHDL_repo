@@ -63,7 +63,6 @@ begin
         o_intr        => o_interrupt
     );
     
-    
     entity_conv : entity work.conv
     port map(
         i_clk         => axi_clk,

@@ -90,7 +90,7 @@ begin
                     if(r_pixel_counter_read = 511) then -- isn't better to just check if total pixels are 0?, once we are in RD_BUFFER we consume everything before becoming IDLE
                         curr_state <= IDLE;
                         r_can_read <= '0';
-                        o_intr <= '1'; -- ???
+                        o_intr <= '1'; 
                     end if;
                 when others => null;
                 end case;
@@ -132,13 +132,13 @@ begin
     begin
         case to_integer(r_current_write_buffer) is -- decoder, easier to read than boolean eq
             when 0 => 
-                r_linebuffer_write_data_valid <= "0001";
+                r_linebuffer_write_data_valid <= "000" & i_pixel_valid;
             when 1 =>
-                r_linebuffer_write_data_valid <= "0010";
+                r_linebuffer_write_data_valid <= "00" & i_pixel_valid & "0";
             when 2 =>
-                r_linebuffer_write_data_valid <= "0100";
+                r_linebuffer_write_data_valid <= "0" & i_pixel_valid & "00";
             when 3 =>
-                r_linebuffer_write_data_valid <= "1000";
+                r_linebuffer_write_data_valid <= i_pixel_valid & "000";
             when others => null;
         end case;
     end process currentWbuffer_datavalid;
@@ -194,9 +194,9 @@ begin
             when 1 =>
                 o_data <= r_linebuffers_data(24 * 4 - 1 downto 24);
             when 2 =>
-                o_data <= r_linebuffers_data(24 * 4 - 1 downto 48) & r_linebuffers_data(24 - 1 downto 0);
+                o_data <= r_linebuffers_data(24 - 1 downto 0) & r_linebuffers_data(24 * 4 - 1 downto 48);
             when 3 =>
-                o_data <= r_linebuffers_data(24 * 4 - 1 downto 72) & r_linebuffers_data(48 - 1 downto 0);
+                o_data <= r_linebuffers_data(48 - 1 downto 0) & r_linebuffers_data(24 * 4 - 1 downto 72);
             when others => null;
         end case;
     end process out_data;

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="fulldesign_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="fulldesign_tb" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="174.122 ns"></ZoomStartTime>
+      <ZoomEndTime time="371.723 ns"></ZoomEndTime>
+      <Cursor1Time time="31,025.000 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="191"></NameColumnWidth>
+      <ValueColumnWidth column_width="125"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="30" />
+   <wvobject fp_name="/fulldesign_tb/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/i_data_valid_tb" type="logic">
+      <obj_property name="ElementShortName">i_data_valid_tb</obj_property>
+      <obj_property name="ObjectShortName">i_data_valid_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/i_input_tb" type="array">
+      <obj_property name="ElementShortName">i_input_tb[7:0]</obj_property>
+      <obj_property name="ObjectShortName">i_input_tb[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/o_data_ready_tb" type="logic">
+      <obj_property name="ElementShortName">o_data_ready_tb</obj_property>
+      <obj_property name="ObjectShortName">o_data_ready_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/o_data_valid_tb" type="logic">
+      <obj_property name="ElementShortName">o_data_valid_tb</obj_property>
+      <obj_property name="ObjectShortName">o_data_valid_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/o_data_tb" type="array">
+      <obj_property name="ElementShortName">o_data_tb[7:0]</obj_property>
+      <obj_property name="ObjectShortName">o_data_tb[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/o_interrupt_tb" type="logic">
+      <obj_property name="ElementShortName">o_interrupt_tb</obj_property>
+      <obj_property name="ObjectShortName">o_interrupt_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_imageControl/curr_state" type="other">
+      <obj_property name="ElementShortName">curr_state</obj_property>
+      <obj_property name="ObjectShortName">curr_state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_imageControl/r_total_pixels" type="array">
+      <obj_property name="ElementShortName">r_total_pixels[10:0]</obj_property>
+      <obj_property name="ObjectShortName">r_total_pixels[10:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_imageControl/i_pixel_valid" type="logic">
+      <obj_property name="ElementShortName">i_pixel_valid</obj_property>
+      <obj_property name="ObjectShortName">i_pixel_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_imageControl/r_pixel_counter_write" type="array">
+      <obj_property name="ElementShortName">r_pixel_counter_write[8:0]</obj_property>
+      <obj_property name="ObjectShortName">r_pixel_counter_write[8:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_imageControl/r_current_write_buffer" type="array">
+      <obj_property name="ElementShortName">r_current_write_buffer[1:0]</obj_property>
+      <obj_property name="ObjectShortName">r_current_write_buffer[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_imageControl/r_linebuffer_write_data_valid" type="array">
+      <obj_property name="ElementShortName">r_linebuffer_write_data_valid[3:0]</obj_property>
+      <obj_property name="ObjectShortName">r_linebuffer_write_data_valid[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_imageControl/r_can_read" type="logic">
+      <obj_property name="ElementShortName">r_can_read</obj_property>
+      <obj_property name="ObjectShortName">r_can_read</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_imageControl/r_pixel_counter_read" type="array">
+      <obj_property name="ElementShortName">r_pixel_counter_read[8:0]</obj_property>
+      <obj_property name="ObjectShortName">r_pixel_counter_read[8:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_imageControl/r_current_read_buffer" type="array">
+      <obj_property name="ElementShortName">r_current_read_buffer[1:0]</obj_property>
+      <obj_property name="ObjectShortName">r_current_read_buffer[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_imageControl/r_linebuffer_read_data_valid" type="array">
+      <obj_property name="ElementShortName">r_linebuffer_read_data_valid[3:0]</obj_property>
+      <obj_property name="ObjectShortName">r_linebuffer_read_data_valid[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_imageControl/\inst_linebuffers(0)\/entity_linebuffer/r_buf_data" type="array">
+      <obj_property name="ElementShortName">r_buf_data[511:0][7:0]</obj_property>
+      <obj_property name="ObjectShortName">r_buf_data[511:0][7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_imageControl/\inst_linebuffers(1)\/entity_linebuffer/r_buf_data" type="array">
+      <obj_property name="ElementShortName">r_buf_data[511:0][7:0]</obj_property>
+      <obj_property name="ObjectShortName">r_buf_data[511:0][7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_imageControl/\inst_linebuffers(2)\/entity_linebuffer/r_buf_data" type="array">
+      <obj_property name="ElementShortName">r_buf_data[511:0][7:0]</obj_property>
+      <obj_property name="ObjectShortName">r_buf_data[511:0][7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_imageControl/\inst_linebuffers(3)\/entity_linebuffer/r_buf_data" type="array">
+      <obj_property name="ElementShortName">r_buf_data[511:0][7:0]</obj_property>
+      <obj_property name="ObjectShortName">r_buf_data[511:0][7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_imageControl/o_data" type="array">
+      <obj_property name="ElementShortName">o_data[71:0]</obj_property>
+      <obj_property name="ObjectShortName">o_data[71:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_conv/i_pixel_valid" type="logic">
+      <obj_property name="ElementShortName">i_pixel_valid</obj_property>
+      <obj_property name="ObjectShortName">i_pixel_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_conv/r_mult_data" type="array">
+      <obj_property name="ElementShortName">r_mult_data[0:8]</obj_property>
+      <obj_property name="ObjectShortName">r_mult_data[0:8]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_conv/r_acum" type="other">
+      <obj_property name="ElementShortName">r_acum</obj_property>
+      <obj_property name="ObjectShortName">r_acum</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_conv/o_data" type="array">
+      <obj_property name="ElementShortName">o_data[7:0]</obj_property>
+      <obj_property name="ObjectShortName">o_data[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_conv/pipeline_mult" type="logic">
+      <obj_property name="ElementShortName">pipeline_mult</obj_property>
+      <obj_property name="ObjectShortName">pipeline_mult</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_conv/pipeline_acum" type="logic">
+      <obj_property name="ElementShortName">pipeline_acum</obj_property>
+      <obj_property name="ObjectShortName">pipeline_acum</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_conv/o_data_valid" type="logic">
+      <obj_property name="ElementShortName">o_data_valid</obj_property>
+      <obj_property name="ObjectShortName">o_data_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fulldesign_tb/uut/entity_imageControl/\inst_linebuffers(0)\/entity_linebuffer/r_write_ptr" type="array">
+      <obj_property name="ElementShortName">r_write_ptr[8:0]</obj_property>
+      <obj_property name="ObjectShortName">r_write_ptr[8:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+</wave_config>
