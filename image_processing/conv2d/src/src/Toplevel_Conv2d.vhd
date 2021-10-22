@@ -25,6 +25,8 @@ architecture Behavioral of Toplevel_Conv2d is
     signal o_imageControl_data_valid: std_logic;
     signal neg_axi_reset: std_logic;
     
+    -- for missmatch between data rate between incoming data and outgoing data.
+    -- no need for input, only output, at input we already have the linebuffers
     component output_buffer
       port (
         wr_rst_busy : out std_logic;
