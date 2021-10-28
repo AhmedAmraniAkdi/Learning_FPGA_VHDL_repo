@@ -25,21 +25,23 @@ def float_to_binary(float_):
 # test
 #num = -0.003277228269042432515223417510696890531
 #print(float_to_binary(num))
-new_coeff = []
-with open("coeff_tap9Fc1000Fs44100.fcf", "r") as file:
-    lines = [line.strip() for line in file if line.strip()]
-    lines = [line for line in lines if line[0] != '%']
-    #for line in lines:
-    #    print(line)
-    new_coeff = [0] * len(lines)
-    for i in range(0, len(lines)):
-        new_coeff[i] = float_to_binary(float(lines[i]))
-        print(new_coeff[i])
 
-with open("coeff_tap9Fc1000Fs44100_FIXED.fcf", "w") as file:
-    for i in range(len(new_coeff)):
-        file.write('x"' + new_coeff[i] + '"')
-        if(i != len(new_coeff) - 1):
-            file.write(", ")
-        if(i%5 == 0 and i != 0):
-            file.write("\n")
+if __name__ == "__main__":
+    new_coeff = []
+    with open("coeff_tap10Fc1000Fs44100.fcf", "r") as file:
+        lines = [line.strip() for line in file if line.strip()]
+        lines = [line for line in lines if line[0] != '%']
+        #for line in lines:
+        #    print(line)
+        new_coeff = [0] * len(lines)
+        for i in range(0, len(lines)):
+            new_coeff[i] = float_to_binary(float(lines[i]))
+            print(new_coeff[i])
+
+    with open("coeff_tap10Fc1000Fs44100_FIXED.fcf", "w") as file:
+        for i in range(len(new_coeff)):
+            file.write('x"' + new_coeff[i] + '"')
+            if(i != len(new_coeff) - 1):
+                file.write(", ")
+            if(i%5 == 0 and i != 0):
+                file.write("\n")

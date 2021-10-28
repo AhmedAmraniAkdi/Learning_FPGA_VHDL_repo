@@ -54,14 +54,17 @@ architecture rtl of pipelined_transposed_fir is
     -- right at input
     type t_in_reg is array (0 to num_taps - 1) of signed(in_width - 1 downto 0);
     signal r_a_pipe : t_in_reg := (others => (others => '0'));
+    signal r_a_valid : std_logic := '0';
     
     -- after coefficient multiplication
     type t_mult_reg is array (0 to num_taps - 1) of signed(multiply_width - 1 downto 0);
     signal r_mult_reg : t_mult_reg := (others => (others => '0'));
+    signal r_mult_valid : std_logic := '0';
     
     -- for accum
     type t_accum_reg is array (0 to num_taps - 1) of signed(accum_width - 1 downto 0);
     signal r_accum_reg : t_accum_reg := (others => (others => '0'));
+    -- signal r_accum_valid : std_logic := '0'; it's the output
     
     -- coefficients
     type t_coeff_reg is array (0 to num_taps - 1) of signed(coeff_width - 1 downto 0);
@@ -79,10 +82,12 @@ begin
             for i in 0 to num_taps - 1 loop
                 r_a_pipe(i) <= (others => '0');
             end loop;
+            r_a_valid   <= '0';
         else
             for i in 0 to num_taps - 1 loop
                 r_a_pipe(i) <= signed(x);
             end loop;
+            r_a_valid <= in_valid;
         end if;
     end if;
     end process p_a_pipe;
@@ -94,10 +99,12 @@ begin
             for i in 0 to num_taps - 1 loop
                 r_mult_reg(i) <= (others => '0');
             end loop;
+            r_mult_valid   <= '0';
         else
             for i in 0 to num_taps - 1 loop
                 r_mult_reg(i) <= r_a_pipe(i) * r_coeff_reg(i);
             end loop;
+            r_mult_valid <= r_a_valid;
         end if;
     end if;
     end process p_mult;
@@ -111,6 +118,7 @@ begin
                 r_accum_reg(i) <= (others => '0');
             end loop;
             y <= (others => '0');
+            out_valid   <= '0';
         else
             for i in 1 to num_taps - 2 loop
                 r_accum_reg(i) <= r_accum_reg(i + 1) + r_mult_reg(i);
@@ -118,6 +126,7 @@ begin
             r_accum_reg(num_taps - 1) <= r_mult_reg(num_taps -1);
             -- trucation the fractional part
             y <= std_logic_vector(r_accum_reg(0)(accum_width - 1 downto accum_width - out_width));
+            out_valid <= r_mult_valid;
         end if;
     end if;
     end process p_acum;
