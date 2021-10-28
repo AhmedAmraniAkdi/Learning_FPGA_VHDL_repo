@@ -26,9 +26,11 @@ def float_to_binary(float_):
 #num = -0.003277228269042432515223417510696890531
 #print(float_to_binary(num))
 
+import os.path
+
 if __name__ == "__main__":
     new_coeff = []
-    with open("coeff_tap10Fc1000Fs44100.fcf", "r") as file:
+    with open(os.path.dirname(__file__) + "/../filter_info/coeff_tap11Fc10800Fs44100.fcf", "r") as file:
         lines = [line.strip() for line in file if line.strip()]
         lines = [line for line in lines if line[0] != '%']
         #for line in lines:
@@ -38,7 +40,7 @@ if __name__ == "__main__":
             new_coeff[i] = float_to_binary(float(lines[i]))
             print(new_coeff[i])
 
-    with open("coeff_tap10Fc1000Fs44100_FIXED.fcf", "w") as file:
+    with open(os.path.dirname(__file__) + "/../filter_info/coeff_tap11Fc10800Fs44100_FIXED.fcf", "w") as file:
         for i in range(len(new_coeff)):
             file.write('x"' + new_coeff[i] + '"')
             if(i != len(new_coeff) - 1):

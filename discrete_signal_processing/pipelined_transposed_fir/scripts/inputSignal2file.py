@@ -5,10 +5,10 @@
 import numpy as np
 
 Fs = 44100
-Fc = 1000
+Fc = 2000
 A  = 5
 
-# the input wave will be A*sin(2pi*1000t) which means the output will be A/2*sin(2pi*1000t)
+# the input wave will be A*sin(2pi*2000t) which means the output will be A/2*sin(2pi*2000t)
 
 t = np.linspace(0, 2 * 1 / Fc, 2 * Fs / Fc + 1)
 input = A * np.sin(2 * np.pi * Fc * t)
@@ -29,7 +29,9 @@ def float_to_binary(float_):
 
     return FormatStr.format(temp)
 
-with open("inputWave.txt", "w") as file:
+import os.path
+
+with open(os.path.dirname(__file__) + "/../input_output_signals/inputSignal.txt", "w") as file:
     for i in input:
         temp = float_to_binary(i)
         #print(temp," ", i) #seems about right
