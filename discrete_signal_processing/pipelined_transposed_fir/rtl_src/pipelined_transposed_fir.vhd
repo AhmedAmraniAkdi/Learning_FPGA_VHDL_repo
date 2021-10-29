@@ -21,8 +21,8 @@ use ieee.numeric_std.all;
 -- -5 to 5 means 4 bits for integer part, leaves us with 12 bits for fractional part so 4,12 format
 -- the filter coefficients are all fractional -> so 1,15 format (1 for sign)
 
--- multiply registers will be 4,27 = 1+3+0,12+15 so 31 bits total
--- accum registers will be 31+4 = 31 + ceil_log2(10)
+-- multiply registers will be 16+16= 32 bits total
+-- accum registers will be 32+4 = 32 + ceil_log2(10)
 
 -- at the end we will truncate the fractional part to fit in the output register
 -- rounding is better, for later, after testbench
@@ -31,11 +31,11 @@ entity pipelined_transposed_fir is
     generic (
         in_width   : natural := 16;
         coeff_width: natural := 16;
-        out_width  : natural := 16;
-        num_taps   : natural := 10;
+        out_width  : natural := 19;
+        num_taps   : natural := 11;
         
-        multiply_width: natural := 31;
-        accum_width   : natural := 35   
+        multiply_width: natural := 32;
+        accum_width   : natural := 36   
     );
     port ( 
         -- in
@@ -54,81 +54,66 @@ architecture rtl of pipelined_transposed_fir is
     -- right at input
     type t_in_reg is array (0 to num_taps - 1) of signed(in_width - 1 downto 0);
     signal r_a_pipe : t_in_reg := (others => (others => '0'));
-    signal r_a_valid : std_logic := '0';
     
     -- after coefficient multiplication
     type t_mult_reg is array (0 to num_taps - 1) of signed(multiply_width - 1 downto 0);
     signal r_mult_reg : t_mult_reg := (others => (others => '0'));
-    signal r_mult_valid : std_logic := '0';
     
     -- for accum
     type t_accum_reg is array (0 to num_taps - 1) of signed(accum_width - 1 downto 0);
     signal r_accum_reg : t_accum_reg := (others => (others => '0'));
-    -- signal r_accum_valid : std_logic := '0'; it's the output
     
+    -- for signal validation
+    -- suppose you send in input x, due to convolution, that input will still make an output
+    -- num_taps samples later, even if the consecutive inputs are not valid
+    -- this will be done by OR consecutive r_acum_valid 
+    type t_valid is array (0 to num_taps - 1) of std_logic;
+    signal r_a_valid    : t_valid := (others => '0');
+    signal r_mult_valid : t_valid := (others => '0');
+    signal r_accum_valid : t_valid := (others => '0');
+        
     -- coefficients
     type t_coeff_reg is array (0 to num_taps - 1) of signed(coeff_width - 1 downto 0);
     signal r_coeff_reg : t_coeff_reg := ( 
-        x"006B", x"02F9", x"0A05", x"14E8", x"1DAD", x"1DAD", 
-        x"14E8", x"0A05", x"02F9", x"006B"
+        x"0000", x"FFF3", x"FD48", x"00AA", x"22AC", x"3EDC", 
+        x"22AC", x"00AA", x"FD48", x"FFF3", x"0000"
     );
     
 begin
-
-    p_a_pipe: process (i_clk) is
-    begin
-    if rising_edge(i_clk) then
-        if (i_reset = '1') then
-            for i in 0 to num_taps - 1 loop
-                r_a_pipe(i) <= (others => '0');
-            end loop;
-            r_a_valid   <= '0';
-        else
-            for i in 0 to num_taps - 1 loop
-                r_a_pipe(i) <= signed(x);
-            end loop;
-            r_a_valid <= in_valid;
-        end if;
-    end if;
-    end process p_a_pipe;
     
-    p_mult: process (i_clk) is
+    y <= std_logic_vector(r_accum_reg(0)(accum_width - 1 downto accum_width - out_width));
+    out_valid <= r_accum_valid(0);
+    
+    p_fir : process (i_clk) is
     begin
+    
     if rising_edge(i_clk) then
-       if (i_reset = '1') then
+        if(i_reset = '1') then
             for i in 0 to num_taps - 1 loop
-                r_mult_reg(i) <= (others => '0');
+                r_a_pipe(i)     <= (others => '0');
+                r_mult_reg(i)   <= (others => '0');
+                r_accum_reg(i)  <= (others => '0');
+                r_a_valid(i)    <= '0';
+                r_mult_valid(i) <= '0';
+                r_accum_valid(i) <= '0';
             end loop;
-            r_mult_valid   <= '0';
         else
             for i in 0 to num_taps - 1 loop
-                r_mult_reg(i) <= r_a_pipe(i) * r_coeff_reg(i);
+                r_a_pipe(i)     <= signed(x);
+                r_a_valid(i)    <= in_valid;
+                r_mult_reg(i)   <= r_a_pipe(i) * r_coeff_reg(i);
+                r_mult_valid(i) <= r_a_valid(i);
             end loop;
-            r_mult_valid <= r_a_valid;
+            
+            for i in 0 to num_taps - 2 loop
+                r_accum_reg(i)   <= r_accum_reg(i + 1) + r_mult_reg(i);
+                r_accum_valid(i) <= r_accum_valid(i + 1) or r_mult_valid(i);
+            end loop;
+            r_accum_reg(num_taps - 1)   <= resize(r_mult_reg(num_taps -1), accum_width);
+            r_accum_valid(num_taps - 1) <= r_mult_valid(num_taps - 1);
         end if;
     end if;
-    end process p_mult;
-
-
-    p_acum: process (i_clk) is
-    begin
-    if rising_edge(i_clk) then
-        if (i_reset = '1') then
-            for i in 0 to num_taps - 1 loop
-                r_accum_reg(i) <= (others => '0');
-            end loop;
-            y <= (others => '0');
-            out_valid   <= '0';
-        else
-            for i in 1 to num_taps - 2 loop
-                r_accum_reg(i) <= r_accum_reg(i + 1) + r_mult_reg(i);
-            end loop;
-            r_accum_reg(num_taps - 1) <= r_mult_reg(num_taps -1);
-            -- trucation the fractional part
-            y <= std_logic_vector(r_accum_reg(0)(accum_width - 1 downto accum_width - out_width));
-            out_valid <= r_mult_valid;
-        end if;
-    end if;
-    end process p_acum;
+    
+    end process p_fir;
 
 end rtl;

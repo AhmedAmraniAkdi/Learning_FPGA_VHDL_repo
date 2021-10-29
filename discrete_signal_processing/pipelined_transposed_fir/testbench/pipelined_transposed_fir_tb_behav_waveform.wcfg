@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="pipelined_transposed_fir_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="pipelined_transposed_fir_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="324.991 ns"></ZoomEndTime>
+      <Cursor1Time time="555.000 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="195"></NameColumnWidth>
+      <ValueColumnWidth column_width="131"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="15" />
+   <wvobject fp_name="/pipelined_transposed_fir_tb/r_stop_tb" type="logic">
+      <obj_property name="ElementShortName">r_stop_tb</obj_property>
+      <obj_property name="ObjectShortName">r_stop_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_transposed_fir_tb/r_reset" type="logic">
+      <obj_property name="ElementShortName">r_reset</obj_property>
+      <obj_property name="ObjectShortName">r_reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_transposed_fir_tb/r_clk" type="logic">
+      <obj_property name="ElementShortName">r_clk</obj_property>
+      <obj_property name="ObjectShortName">r_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_transposed_fir_tb/r_x" type="array">
+      <obj_property name="ElementShortName">r_x[15:0]</obj_property>
+      <obj_property name="ObjectShortName">r_x[15:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_transposed_fir_tb/uut/in_valid" type="logic">
+      <obj_property name="ElementShortName">in_valid</obj_property>
+      <obj_property name="ObjectShortName">in_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_transposed_fir_tb/uut/r_a_pipe" type="array">
+      <obj_property name="ElementShortName">r_a_pipe[0:10][15:0]</obj_property>
+      <obj_property name="ObjectShortName">r_a_pipe[0:10][15:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_transposed_fir_tb/uut/r_a_valid" type="array">
+      <obj_property name="ElementShortName">r_a_valid[0:10]</obj_property>
+      <obj_property name="ObjectShortName">r_a_valid[0:10]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_transposed_fir_tb/uut/r_coeff_reg" type="array">
+      <obj_property name="ElementShortName">r_coeff_reg[0:10][15:0]</obj_property>
+      <obj_property name="ObjectShortName">r_coeff_reg[0:10][15:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_transposed_fir_tb/uut/r_mult_reg" type="array">
+      <obj_property name="ElementShortName">r_mult_reg[0:10][31:0]</obj_property>
+      <obj_property name="ObjectShortName">r_mult_reg[0:10][31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_transposed_fir_tb/uut/r_mult_valid" type="array">
+      <obj_property name="ElementShortName">r_mult_valid[0:10]</obj_property>
+      <obj_property name="ObjectShortName">r_mult_valid[0:10]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_transposed_fir_tb/uut/r_accum_reg" type="array">
+      <obj_property name="ElementShortName">r_accum_reg[0:10][35:0]</obj_property>
+      <obj_property name="ObjectShortName">r_accum_reg[0:10][35:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_transposed_fir_tb/uut/r_accum_valid" type="array">
+      <obj_property name="ElementShortName">r_accum_valid[0:10]</obj_property>
+      <obj_property name="ObjectShortName">r_accum_valid[0:10]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_transposed_fir_tb/r_y" type="array">
+      <obj_property name="ElementShortName">r_y[15:0]</obj_property>
+      <obj_property name="ObjectShortName">r_y[15:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_transposed_fir_tb/uut/y" type="array">
+      <obj_property name="ElementShortName">y[15:0]</obj_property>
+      <obj_property name="ObjectShortName">y[15:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_transposed_fir_tb/uut/out_valid" type="logic">
+      <obj_property name="ElementShortName">out_valid</obj_property>
+      <obj_property name="ObjectShortName">out_valid</obj_property>
+   </wvobject>
+</wave_config>

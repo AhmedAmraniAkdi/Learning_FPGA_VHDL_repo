@@ -9,8 +9,6 @@ Fs = 44100
 Fc = 2000
 A  = 5
 
-# the input wave will be A*sin(2pi*2000t) which means the output will be A/2*sin(2pi*2000t)
-
 # input wave and coeff in float
 t = np.linspace(0, 2 * 1 / Fc, 2 * Fs / Fc + 1)
 input_float = A * np.sin(2 * np.pi * Fc * t)
@@ -22,8 +20,6 @@ with open(os.path.dirname(__file__) + "/../filter_info/coeff_tap11Fc10800Fs44100
     coeff_float = [0] * len(lines)
     for i in range(0, len(lines)):
         coeff_float[i] = float(lines[i])
-
-#print(coeff_float)
 
 # input wave and coeff in fixed point
 Scaler_input = 2**12
@@ -40,21 +36,21 @@ x_axis_conv = [1/Fs*i for i in range(0, len(coeff_float) + len(input_float) - 1)
 
 # convolution fixed
 conv_fixed = np.convolve(input_fixed, coeff_fixed)
-# the conv output is in 35 bits, we truncate leaving with only the top 16 bits
-conv_fixed = conv_fixed >> 19
-new_Scaler = 1 / 2**8
-conv_fixed = conv_fixed * new_Scaler
+# the conv output is in 36 bits, we truncate leaving with only the top 19 bits
+conv_fixed = conv_fixed >> 17
+new_Scaler = 2**10
+conv_fixed = conv_fixed * 1 / new_Scaler
 
 # read result from testbench
 conv_testbench = []
-with open(os.path.dirname(__file__) + "/../input_output_signals/output_conv_tesbench.txt", "r") as file:
+with open(os.path.dirname(__file__) + "/../input_output_signals/outputSignal.txt", "r") as file:
     lines = [line.strip() for line in file if line.strip()]
     conv_testbench = [0] * len(lines)
     for i in range(0, len(lines)):
         conv_testbench[i] = int(lines[i])
 
-new_Scaler = 2**8
-conv_fixed = conv_testbench * 1 / new_Scaler
+new_Scaler = 2**10 # 9,10 format (19 bits)
+conv_testbench = [i * 1 / new_Scaler for i in conv_testbench]
 
 # compare on plot
 plt.plot(t, input_float, label='input')
@@ -75,3 +71,7 @@ print(np.average(diff_conv_float_fixed))
 diff_conv_float_fixedFpga = conv_float - conv_testbench
 print("Av error convolution float vs fixedFpga")
 print(np.average(diff_conv_float_fixedFpga))
+
+diff_conv_fixed_fixedFpga = conv_fixed - conv_testbench
+print("Av error convolution fixed vs fixedFpga")
+print(np.average(diff_conv_fixed_fixedFpga))

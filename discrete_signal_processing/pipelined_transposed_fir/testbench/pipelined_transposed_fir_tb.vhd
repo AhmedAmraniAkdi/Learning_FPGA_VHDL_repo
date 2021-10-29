@@ -16,11 +16,11 @@ architecture Behave of pipelined_transposed_fir_tb is
         generic (
             in_width   : natural := 16;
             coeff_width: natural := 16;
-            out_width  : natural := 16;
-            num_taps   : natural := 10;
+            out_width  : natural := 19;
+            num_taps   : natural := 11;
             
-            multiply_width: natural := 31;
-            accum_width   : natural := 35   
+            multiply_width: natural := 32;
+            accum_width   : natural := 36
         );
         port ( 
             -- in
@@ -29,21 +29,20 @@ architecture Behave of pipelined_transposed_fir_tb is
             x        : in std_logic_vector(in_width - 1 downto 0);
             in_valid : in std_logic;
             -- out
-            y        : out std_logic_vector(out_width -1 downto 0);
+            y        : out std_logic_vector(out_width - 1 downto 0);
             out_valid: out std_logic
         );
     end component pipelined_transposed_fir;
     
     constant c_in_width   : natural := 16;
     constant c_coeff_width: natural := 16;
-    constant c_out_width  : natural := 16;
-    constant c_num_taps   : natural := 10;
+    constant c_out_width  : natural := 19;
+    constant c_num_taps   : natural := 11;
             
-    constant c_multiply_width: natural := 31;
-    constant c_accum_width   : natural := 35;
+    constant c_multiply_width: natural := 32;
+    constant c_accum_width   : natural := 36;
     
-    constant clk_period      : time := 10 ns; 
-    constant conv_width      : natural := 98;
+    constant clk_period      : time := 10 ns;
 
             -- in
     signal r_clk      : std_logic := '0';
@@ -54,7 +53,9 @@ architecture Behave of pipelined_transposed_fir_tb is
     signal r_y        : std_logic_vector(c_out_width -1 downto 0);
     signal r_out_valid: std_logic;
     
-    file wave_file : text open read_mode is "inputWave.txt";
+    signal r_stop_tb  : std_logic := '0';
+    
+    file wave_file : text open read_mode is "inputSignal.txt";
     
 begin
 
@@ -103,30 +104,35 @@ begin
        r_in_valid <= '1';
     end loop;
     
+    wait until r_clk = '1';
+    r_in_valid <= '0';
+    r_stop_tb <= '1';
+    
     file_close(wave_file);
+    
+    wait;
     
 	end process p_input;
 	
     p_output : process (r_clk) is
-	  file output_file : text open read_mode is "outputWave.txt";
+	  file output_file : text open write_mode is "outputSignal.txt";
 	  variable output_line : line;
-      variable output : integer;--std_logic_vector(c_out_width - 1 downto 0);
-      variable received : natural := 0;
+      variable output : integer;
 	begin
 	
 	if rising_edge(r_clk) then
 	   if(r_out_valid = '1') then
-	       output := to_integer(unsigned(r_y)); 
-	       write(output_line, output, right, c_out_width);
+	       output := to_integer(signed(r_y)); 
+	       write(output_line, output);
            writeline(output_file, output_line);
-           received := received + 1;
-           if(received = conv_width) then
+	   else
+          if(r_stop_tb = '1') then
               file_close(output_file);
               file_close(wave_file);
               report "simulation finished";
               finish;
-           end if;
-	   end if;
+          end if;
+       end if;
 	end if;
     
 	end process p_output;
