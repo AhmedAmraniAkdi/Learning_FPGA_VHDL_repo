@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="spiControl_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="spiControl_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="3,132.001 ns"></ZoomEndTime>
+      <Cursor1Time time="318.000 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="177"></NameColumnWidth>
+      <ValueColumnWidth column_width="85"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="14" />
+   <wvobject fp_name="/spiControl_tb/i_clk_tb" type="logic">
+      <obj_property name="ElementShortName">i_clk_tb</obj_property>
+      <obj_property name="ObjectShortName">i_clk_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spiControl_tb/i_reset_tb" type="logic">
+      <obj_property name="ElementShortName">i_reset_tb</obj_property>
+      <obj_property name="ObjectShortName">i_reset_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spiControl_tb/i_data_tb" type="array">
+      <obj_property name="ElementShortName">i_data_tb[7:0]</obj_property>
+      <obj_property name="ObjectShortName">i_data_tb[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spiControl_tb/uut/r_shift_reg" type="array">
+      <obj_property name="ElementShortName">r_shift_reg[7:0]</obj_property>
+      <obj_property name="ObjectShortName">r_shift_reg[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spiControl_tb/i_data_valid_tb" type="logic">
+      <obj_property name="ElementShortName">i_data_valid_tb</obj_property>
+      <obj_property name="ObjectShortName">i_data_valid_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spiControl_tb/ss_tb" type="logic">
+      <obj_property name="ElementShortName">ss_tb</obj_property>
+      <obj_property name="ObjectShortName">ss_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spiControl_tb/sclk_tb" type="logic">
+      <obj_property name="ElementShortName">sclk_tb</obj_property>
+      <obj_property name="ObjectShortName">sclk_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spiControl_tb/uut/r_ce" type="logic">
+      <obj_property name="ElementShortName">r_ce</obj_property>
+      <obj_property name="ObjectShortName">r_ce</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spiControl_tb/uut/r_sclk" type="logic">
+      <obj_property name="ElementShortName">r_sclk</obj_property>
+      <obj_property name="ObjectShortName">r_sclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spiControl_tb/uut/r_counter" type="array">
+      <obj_property name="ElementShortName">r_counter[2:0]</obj_property>
+      <obj_property name="ObjectShortName">r_counter[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spiControl_tb/mosi_tb" type="logic">
+      <obj_property name="ElementShortName">mosi_tb</obj_property>
+      <obj_property name="ObjectShortName">mosi_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spiControl_tb/uut/r_sending_counter" type="array">
+      <obj_property name="ElementShortName">r_sending_counter[2:0]</obj_property>
+      <obj_property name="ObjectShortName">r_sending_counter[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spiControl_tb/o_data_sent_tb" type="logic">
+      <obj_property name="ElementShortName">o_data_sent_tb</obj_property>
+      <obj_property name="ObjectShortName">o_data_sent_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spiControl_tb/uut/curr_state" type="other">
+      <obj_property name="ElementShortName">curr_state</obj_property>
+      <obj_property name="ObjectShortName">curr_state</obj_property>
+   </wvobject>
+</wave_config>
